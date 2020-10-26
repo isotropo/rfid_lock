@@ -3,9 +3,16 @@ import paho.mqtt.client as mqtt
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
 import threading
+# from time import gmtime, localtime
+import time
 
 reader = SimpleMFRC522()
 
+
+# unlock_GPIO = 23
+
+# GPIO.setmode(GPIO.BCM) # GPIO Numbers instead of board numbers
+# GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -21,8 +28,18 @@ def on_connect(client, userdata, flags, rc):
 #     print(msg.topic+" "+str(msg.payload))
 
 def on_message(client, userdata, message):
-    print("Received message '" + message.payload.decode('utf-8') + "' on topic '"
-        + message.topic + "' with QoS " + str(message.qos))
+    print("Door unlock for " + message.payload.decode('utf-8') + " seconds")
+    time.sleep(message.payload.decode('utf-8'))
+    # unlock(message.payload.decode('utf-8'))
+    
+# def unlock(time_ms):
+#     print("unlocked for "+str(time_ms)+" seconds")
+#     GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
+#     GPIO.output(unlock_GPIO, GPIO.LOW) # out
+#     GPIO.output(unlock_GPIO, GPIO.HIGH) # on
+#     time.sleep(time_ms) # sleep for set time
+#     GPIO.output(unlock_GPIO, GPIO.LOW) # out
+#     return
 
 client = mqtt.Client()
 client.on_connect = on_connect
@@ -38,10 +55,12 @@ client.connect("hexfrontdoor.local", 1883, 60)
 
 def read_loop():
     while True:
+        global open = False
         try:
                 id, text = reader.read()
                 print(id)
                 # print(text)
+                if
                 client.publish("RFID_Scan", str(id))
                 # client.loop_forever(timeout=5.0)
         finally:

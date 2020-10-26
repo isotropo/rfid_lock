@@ -79,13 +79,11 @@ def unlock():
     GPIO.output(unlock_GPIO, GPIO.LOW) # out
 
 
-# set up dataframes
-usergroups = pd.read_csv('usergroups.csv')
-usergroups_df = pd.DataFrame(data=usergroups)
+# usergroups = pd.read_csv('usergroups.csv')
+# usergroups_df = pd.DataFrame(data=usergroups)
+# usergroups_list = usergroups_df.to_dict()
+# print(usergroups_list)
 
-usergroups_list = usergroups_df.to_dict()
-
-print(usergroups_list)
 
 # Variable defs
 

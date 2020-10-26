@@ -66,18 +66,29 @@ def on_message(client, userdata, msg):
     if msg.topic == "RFID_Scan":
         if should_unlock(msg.payload.decode('utf-8')):
             print("access granted")
-             # client.publish("Door_Unlock", str(time_ms))
+            unlock()
+            # client.publish("Door_Unlock", str(time_ms))
             client.publish("Door_Unlock", time_ms)
 
 def unlock():
-    global time_ms
-    print("unlocked for "+str(time_ms)+" seconds")
-    GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
-    GPIO.output(unlock_GPIO, GPIO.LOW) # out
-    GPIO.output(unlock_GPIO, GPIO.HIGH) # on
-    time.sleep(time_ms) # sleep for set time
-    GPIO.output(unlock_GPIO, GPIO.LOW) # out
-    return
+  global time_ms
+  print("unlocked for "+str(time_ms)+" seconds")
+  GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
+  GPIO.output(unlock_GPIO, GPIO.LOW) # out
+  GPIO.output(unlock_GPIO, GPIO.HIGH) # on
+  time.sleep(time_ms) # sleep for set time
+  GPIO.output(unlock_GPIO, GPIO.LOW) # out
+  return
+
+# def unlock():
+#     global time_ms
+#     print("unlocked for "+str(time_ms)+" seconds")
+#     GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
+#     GPIO.output(unlock_GPIO, GPIO.LOW) # out
+#     GPIO.output(unlock_GPIO, GPIO.HIGH) # on
+#     time.sleep(time_ms) # sleep for set time
+#     GPIO.output(unlock_GPIO, GPIO.LOW) # out
+#     return
 
 client = mqtt.Client()
 client.on_connect = on_connect
