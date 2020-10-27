@@ -55,17 +55,14 @@ client.connect("hexfrontdoor.local", 1883, 60)
 
 def read_loop():
     while True:
-        global open = False
         try:
                 id, text = reader.read()
                 print(id)
                 # print(text)
-                if
                 client.publish("RFID_Scan", str(id))
                 # client.loop_forever(timeout=5.0)
-        finally:
-                GPIO.cleanup()
 
 x = threading.Thread(target=read_loop)
 x.start()
 client.loop_forever()
+GPIO.cleanup()

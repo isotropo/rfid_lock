@@ -11,14 +11,14 @@ whitelist = {
 }
 
 def if_valid(uid,usergroup):
-    
+    if()
     day = date.today().weekday()
     now = datetime.datetime.now()
     hour = '{:02d}'.format(now.hour)
     minute = '{:02d}'.format(now.minute)
     print(day,hour,minute)
     # Check if user is present. If assigned usergroup, check if current time is within time_range[day]
-    if(in_range(usergroup)):
+    if(in_range(usergroup) & ):
         return True
     else:
         return False

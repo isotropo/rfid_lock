@@ -4,7 +4,7 @@ import pandas as pd
 import time
 import RPi.GPIO as GPIO
 
-time_ms = 10.0
+time_s = 10.0
 unlock_GPIO = 23
 
 GPIO.setmode(GPIO.BCM) # GPIO Numbers instead of board numbers
@@ -16,15 +16,15 @@ GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
 #             "weekday": "00:00-00:00",
 #             "weekend": "00:00-00:00"
 #         },
-#         "time_ms": "10.0"
+#         "time_s": "10.0"
 #     }
 # }
 
 # print(dict_test['default_group'])
 
 
-# def ifUnlocked(time_ms):
-#   time_left = time_ms
+# def ifUnlocked(time_s):
+#   time_left = time_s
 #   while(time_left > 0):
 #     print(time_left)
 #     time.sleep(1)
@@ -66,27 +66,27 @@ def on_message(client, userdata, msg):
     if msg.topic == "RFID_Scan":
         if should_unlock(msg.payload.decode('utf-8')):
             print("access granted")
+            client.publish("Door_Unlock", time_s)
             unlock()
-            # client.publish("Door_Unlock", str(time_ms))
-            client.publish("Door_Unlock", time_ms)
+            # client.publish("Door_Unlock", str(time_s))
 
 def unlock():
-  global time_ms
-  print("unlocked for "+str(time_ms)+" seconds")
+  global time_s
+  print("unlocked for "+str(time_s)+" seconds")
   GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
   GPIO.output(unlock_GPIO, GPIO.LOW) # out
   GPIO.output(unlock_GPIO, GPIO.HIGH) # on
-  time.sleep(time_ms) # sleep for set time
+  time.sleep(time_s) # sleep for set time
   GPIO.output(unlock_GPIO, GPIO.LOW) # out
   return
 
 # def unlock():
-#     global time_ms
-#     print("unlocked for "+str(time_ms)+" seconds")
+#     global time_s
+#     print("unlocked for "+str(time_s)+" seconds")
 #     GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
 #     GPIO.output(unlock_GPIO, GPIO.LOW) # out
 #     GPIO.output(unlock_GPIO, GPIO.HIGH) # on
-#     time.sleep(time_ms) # sleep for set time
+#     time.sleep(time_s) # sleep for set time
 #     GPIO.output(unlock_GPIO, GPIO.LOW) # out
 #     return
 
