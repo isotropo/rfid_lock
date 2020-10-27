@@ -10,7 +10,7 @@ whitelist = {
     
 }
 
-def ifValid(uid,usergroup):
+def if_valid(uid,usergroup):
     
     day = date.today().weekday()
     now = datetime.datetime.now()
@@ -18,4 +18,10 @@ def ifValid(uid,usergroup):
     minute = '{:02d}'.format(now.minute)
     print(day,hour,minute)
     # Check if user is present. If assigned usergroup, check if current time is within time_range[day]
+    if(in_range(usergroup)):
+        return True
+    else:
+        return False
 
+def in_range(usergroup):
+    return True
