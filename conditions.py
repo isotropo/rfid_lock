@@ -6,7 +6,6 @@ import RPi.GPIO as GPIO
 
 time_s = 10.0
 unlock_GPIO = 23
-wait_until = 0
 previous_uid = 0
 
 GPIO.setmode(GPIO.BCM) # GPIO Numbers instead of board numbers
@@ -52,11 +51,7 @@ def should_unlock(scan_id):
     # print(type(suid), type(scan_id))
     # print(suid == scan_id, suid, scan_id)
     if suid == str(scan_id):
-      if wait_until > time.time():
-        return False
-      if wait_until <= time.time():
-        wait_until = time.time() + time_s
-        return True
+      return True
   return False
 
 
@@ -87,7 +82,7 @@ def unlock():
   GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
   GPIO.output(unlock_GPIO, GPIO.LOW) # out
   GPIO.output(unlock_GPIO, GPIO.HIGH) # on
-  time.sleep(time_s) # sleep for set time
+  # time.sleep(time_s) # sleep for set time
   GPIO.output(unlock_GPIO, GPIO.LOW) # out
   return
 

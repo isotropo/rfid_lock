@@ -30,9 +30,9 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, message):
     print("Door unlock for " + message.payload.decode('utf-8') + " seconds")
+    client.publish("RFID_Scan", "0")
     time.sleep(float(message.payload.decode('utf-8')))
     print("Door unlock complete")
-    client.publish("RFID_Scan", "0")
     # unlock(message.payload.decode('utf-8'))
 
 # def unlock(time_ms):
@@ -65,7 +65,7 @@ def read_loop():
             print(id)
             # print(text)
             client.publish("RFID_Scan", str(id))
-            time.sleep(1)
+            # time.sleep(1)
             # client.loop_forever(timeout=5.0)
         finally:
             pass
