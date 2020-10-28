@@ -6,6 +6,8 @@ import RPi.GPIO as GPIO
 
 time_s = 10.0
 unlock_GPIO = 23
+wait_until = 0
+previous_uid = 0
 
 GPIO.setmode(GPIO.BCM) # GPIO Numbers instead of board numbers
 GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
@@ -44,11 +46,16 @@ uid_list = whitelist_df.loc[:,'uid']
 
 
 def should_unlock(scan_id):
+  global wait_until
   for uid in uid_list:
     suid = str(uid)
     # print(type(suid), type(scan_id))
     # print(suid == scan_id, suid, scan_id)
     if suid == str(scan_id):
+      if wait_until > time.time():
+        return False
+      if wait_until <= time.time():
+        wait_until = time.time() + time_s
         return True
   return False
 
@@ -62,13 +69,17 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
+    global wait_until, previous_uid
+    print(previous_uid)
+
     print(msg.topic+" "+str(msg.payload))
-    if msg.topic == "RFID_Scan":
+    if msg.topic == "RFID_Scan" and msg.payload.decode('utf-8') != previous_uid:
         if should_unlock(msg.payload.decode('utf-8')):
-            print("access granted")
-            client.publish("Door_Unlock", time_s)
+            print("Access granted")
+            client.publish("Door_Unlock", str(time_s))
             unlock()
             # client.publish("Door_Unlock", str(time_s))
+    previous_uid = msg.payload.decode('utf-8')
 
 def unlock():
   global time_s
