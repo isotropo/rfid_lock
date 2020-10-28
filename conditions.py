@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import time
 import RPi.GPIO as GPIO
+import os
 
 time_s = 10.0
 unlock_GPIO = 23
@@ -32,7 +33,7 @@ GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
 #     time_left -= 1
 #   return False
     
-whitelist = pd.read_csv('whitelist.csv')
+whitelist = pd.read_csv('/home/pi/rfid_lock/whitelist.csv')
 whitelist_df = pd.DataFrame(data=whitelist)
 uid_list = whitelist_df.loc[:,'uid']
 
@@ -64,9 +65,9 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    global wait_until, previous_uid
+    # global wait_until, previous_uid
+    global previous_uid
     print(previous_uid)
-
     print(msg.topic+" "+str(msg.payload))
     if msg.topic == "RFID_Scan" and msg.payload.decode('utf-8') != previous_uid:
         if should_unlock(msg.payload.decode('utf-8')):
@@ -82,7 +83,7 @@ def unlock():
   GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
   GPIO.output(unlock_GPIO, GPIO.LOW) # out
   GPIO.output(unlock_GPIO, GPIO.HIGH) # on
-  # time.sleep(time_s) # sleep for set time
+  time.sleep(time_s) # sleep for set time
   GPIO.output(unlock_GPIO, GPIO.LOW) # out
   return
 

@@ -30,8 +30,8 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, message):
     print("Door unlock for " + message.payload.decode('utf-8') + " seconds")
+    # time.sleep(float(message.payload.decode('utf-8')))
     client.publish("RFID_Scan", "0")
-    time.sleep(float(message.payload.decode('utf-8')))
     print("Door unlock complete")
     # unlock(message.payload.decode('utf-8'))
 
