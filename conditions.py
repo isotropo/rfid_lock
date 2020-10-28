@@ -46,7 +46,7 @@ uid_list = whitelist_df.loc[:,'uid']
 
 
 def should_unlock(scan_id):
-  global wait_until
+  # global wait_until
   for uid in uid_list:
     suid = str(uid)
     # print(type(suid), type(scan_id))
@@ -87,15 +87,6 @@ def unlock():
   GPIO.output(unlock_GPIO, GPIO.LOW) # out
   return
 
-# def unlock():
-#     global time_s
-#     print("unlocked for "+str(time_s)+" seconds")
-#     GPIO.setup(unlock_GPIO, GPIO.OUT) # GPIO Assign mode
-#     GPIO.output(unlock_GPIO, GPIO.LOW) # out
-#     GPIO.output(unlock_GPIO, GPIO.HIGH) # on
-#     time.sleep(time_s) # sleep for set time
-#     GPIO.output(unlock_GPIO, GPIO.LOW) # out
-#     return
 
 client = mqtt.Client()
 client.on_connect = on_connect
