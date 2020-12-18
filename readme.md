@@ -32,3 +32,10 @@ syslog:
 Running in `/etc/rc.local`:
  - docker eclipse-mqtt server
  - python scripts
+
+### Misc:
+
+    ps aux | grep python
+
+#### Updates:
+- `12-1-20`: Adding detection of unlock from a keypad (GPIO High->Low trigger)
