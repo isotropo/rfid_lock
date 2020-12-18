@@ -1,7 +1,15 @@
 
 
 ### Python Modules Used:
-
+paho.mqtt.client as mqtt
+mfrc522
+numpy as np
+pandas as pd
+time
+RPi.GPIO as GPIO
+os
+datetime
+threading
 
 ### sshfs commands:
 

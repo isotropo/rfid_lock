@@ -84,31 +84,13 @@ def my_callback(channel):
 
 # In[8]:
 
-
 client = mqtt.Client()
 client.on_connect = on_connect
 
-
 # In[9]:
-
 
 client.connect("localhost", 1883, 60)
 
-
-# In[10]:
-
-
 GPIO.add_event_detect(channel, GPIO.FALLING, callback=my_callback, bouncetime=100)
 
-
-# In[ ]:
-
-
 client.loop_forever()
-
-
-# In[ ]:
-
-
-
-
